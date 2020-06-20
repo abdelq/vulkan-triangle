@@ -1,29 +1,47 @@
-const c = @import("c.zig");
+usingnamespace @import("c.zig");
 
-pub const Window = c.GLFWwindow;
+// Constants
+pub const client_api = GLFW_CLIENT_API;
+pub const no_api = GLFW_NO_API;
 
-pub const client_api = c.GLFW_CLIENT_API;
-pub const no_api = c.GLFW_NO_API;
+// Structures
+pub const Window = GLFWwindow;
 
-pub const setErrorCallback = c.glfwSetErrorCallback;
-pub const setFramebufferSizeCallback = c.glfwSetFramebufferSizeCallback;
+// Functions
+pub const createWindow = glfwCreateWindow;
+pub const destroyWindow = glfwDestroyWindow;
+pub const getFramebufferSize = glfwGetFramebufferSize;
+pub const getRequiredInstanceExtensions = glfwGetRequiredInstanceExtensions;
+pub const pollEvents = glfwPollEvents;
+pub const setErrorCallback = glfwSetErrorCallback;
+pub const setFramebufferSizeCallback = glfwSetFramebufferSizeCallback;
+pub const terminate = glfwTerminate;
+pub const waitEvents = glfwWaitEvents;
+pub const windowHint = glfwWindowHint;
 
-pub fn init() bool {
-    return c.glfwInit() != c.GLFW_FALSE;
-}
-pub const terminate = c.glfwTerminate;
-
-pub fn vulkanSupported() bool {
-    return c.glfwVulkanSupported() != c.GLFW_FALSE;
-}
-
-pub const windowHint = c.glfwWindowHint;
-
-pub const createWindow = c.glfwCreateWindow;
-pub const destroyWindow = c.glfwDestroyWindow;
-
-pub fn windowShouldClose(window: *c.GLFWwindow) bool {
-    return c.glfwWindowShouldClose(window) != c.GLFW_FALSE;
+pub inline fn init() bool {
+    return glfwInit() != GLFW_FALSE;
 }
 
-pub const pollEvents = c.glfwPollEvents;
+pub inline fn vulkanSupported() bool {
+    return glfwVulkanSupported() != GLFW_FALSE;
+}
+
+pub inline fn windowShouldClose(window: *Window) bool {
+    return glfwWindowShouldClose(window) != GLFW_FALSE;
+}
+
+pub inline fn createWindowSurface(
+    instance: VkInstance,
+    window: *Window,
+    allocator: ?*const VkAllocationCallbacks,
+    surface: *VkSurfaceKHR,
+) !void {
+    return switch (glfwCreateWindowSurface(instance, window, allocator, surface)) {
+        .VK_SUCCESS => {},
+        .VK_ERROR_EXTENSION_NOT_PRESENT => error.ExtensionNotPresent,
+        .VK_ERROR_INITIALIZATION_FAILED => error.InitializationFailed,
+        .VK_ERROR_NATIVE_WINDOW_IN_USE_KHR => error.NativeWindowInUse,
+        else => unreachable,
+    };
+}
