@@ -13,21 +13,22 @@ pub fn build(b: *Builder) !void {
 
     exe.install();
 
+    // Shaders
     try b.makePath(try path.join(b.allocator, &[_][]const u8{ b.cache_root, "s" }));
-    try buildShader(b, "triangle.vert");
-    try buildShader(b, "triangle.frag");
-}
-
-fn buildShader(b: *Builder, comptime shader: []const u8) !void {
-    const output = try path.join(b.allocator, &[_][]const u8{
-        b.cache_root, "s", shader ++ ".spv",
-    });
-    // TODO Evaluate only once with exe.build_mode
-    const optim_lvl = switch (b.release_mode.?) {
+    const opt = switch (exe.build_mode) {
         .Debug => "-O0",
         .ReleaseSafe, .ReleaseFast => "-O",
         .ReleaseSmall => "-Os",
     };
+
+    try buildShader(b, opt, "triangle.vert");
+    try buildShader(b, opt, "triangle.frag");
+}
+
+fn buildShader(b: *Builder, optim_lvl: []const u8, comptime shader: []const u8) !void {
+    const output = try path.join(b.allocator, &[_][]const u8{
+        b.cache_root, "s", shader ++ ".spv",
+    });
 
     // TODO Recompile on modification only
     const cmd = b.addSystemCommand(&[_][]const u8{
