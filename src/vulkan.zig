@@ -128,9 +128,23 @@ pub const destroySemaphore = vkDestroySemaphore;
 pub const destroyShaderModule = vkDestroyShaderModule;
 pub const destroySurface = vkDestroySurfaceKHR;
 pub const destroySwapchain = vkDestroySwapchainKHR;
-pub const freeCommandBuffers = vkFreeCommandBuffers;
 pub const getDeviceQueue = vkGetDeviceQueue;
-pub const getPhysicalDeviceQueueFamilyProperties = vkGetPhysicalDeviceQueueFamilyProperties;
+
+pub inline fn freeCommandBuffers(
+    device: Device,
+    command_pool: CommandPool,
+    command_buffers: []const CommandBuffer,
+) void {
+    vkFreeCommandBuffers(device, command_pool, @intCast(u32, command_buffers.len), command_buffers.ptr);
+}
+
+pub inline fn getPhysicalDeviceQueueFamilyProperties(
+    physical_device: PhysicalDevice,
+    queue_family_property_count: *u32,
+    queue_family_properties: ?[]QueueFamilyProperties,
+) void {
+    vkGetPhysicalDeviceQueueFamilyProperties(physical_device, queue_family_property_count, if (queue_family_properties) |props| props.ptr else null);
+}
 
 pub inline fn acquireNextImage(
     device: Device,
@@ -479,11 +493,11 @@ pub inline fn getPhysicalDeviceSurfacePresentModes(
 
 pub inline fn getPhysicalDeviceSurfaceSupport(
     physical_device: PhysicalDevice,
-    queue_family_index: u32,
+    queue_family_index: usize,
     surface: Surface,
     supported: *align(@sizeOf(Bool32)) bool,
 ) !void {
-    return switch (vkGetPhysicalDeviceSurfaceSupportKHR(physical_device, queue_family_index, surface, @ptrCast(*Bool32, supported))) {
+    return switch (vkGetPhysicalDeviceSurfaceSupportKHR(physical_device, @intCast(u32, queue_family_index), surface, @ptrCast(*Bool32, supported))) {
         .VK_SUCCESS => {},
         .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
         .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
