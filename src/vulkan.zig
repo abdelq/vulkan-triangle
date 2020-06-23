@@ -159,12 +159,12 @@ pub inline fn acquireNextImage(
         .VK_TIMEOUT => .Timeout,
         .VK_NOT_READY => .NotReady,
         .VK_SUBOPTIMAL_KHR => .Suboptimal,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_DEVICE_LOST => error.DeviceLost,
-        .VK_ERROR_OUT_OF_DATE_KHR => error.OutOfDate,
-        .VK_ERROR_SURFACE_LOST_KHR => error.SurfaceLost,
-        .VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT => error.FullScreenExclusiveModeLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_DEVICE_LOST => Error.DeviceLost,
+        .VK_ERROR_OUT_OF_DATE_KHR => Error.OutOfDate,
+        .VK_ERROR_SURFACE_LOST_KHR => Error.SurfaceLost,
+        .VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT => Error.FullScreenExclusiveModeLost,
         else => unreachable,
     };
 }
@@ -176,8 +176,8 @@ pub inline fn allocateCommandBuffers(
 ) !void {
     return switch (vkAllocateCommandBuffers(device, allocate_info, command_buffers.ptr)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -188,8 +188,8 @@ pub inline fn beginCommandBuffer(
 ) !void {
     return switch (vkBeginCommandBuffer(command_buffer, begin_info)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -202,8 +202,8 @@ pub inline fn createCommandPool(
 ) !void {
     return switch (vkCreateCommandPool(device, create_info, allocator, command_pool)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -216,13 +216,13 @@ pub inline fn createDevice(
 ) !void {
     return switch (vkCreateDevice(physical_device, create_info, allocator, device)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_INITIALIZATION_FAILED => error.InitializationFailed,
-        .VK_ERROR_EXTENSION_NOT_PRESENT => error.ExtensionNotPresent,
-        .VK_ERROR_FEATURE_NOT_PRESENT => error.FeatureNotPresent,
-        .VK_ERROR_TOO_MANY_OBJECTS => error.TooManyObjects,
-        .VK_ERROR_DEVICE_LOST => error.DeviceLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_INITIALIZATION_FAILED => Error.InitializationFailed,
+        .VK_ERROR_EXTENSION_NOT_PRESENT => Error.ExtensionNotPresent,
+        .VK_ERROR_FEATURE_NOT_PRESENT => Error.FeatureNotPresent,
+        .VK_ERROR_TOO_MANY_OBJECTS => Error.TooManyObjects,
+        .VK_ERROR_DEVICE_LOST => Error.DeviceLost,
         else => unreachable,
     };
 }
@@ -235,8 +235,8 @@ pub inline fn createFence(
 ) !void {
     return switch (vkCreateFence(device, create_info, allocator, fence)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -249,8 +249,8 @@ pub inline fn createFramebuffer(
 ) !void {
     return switch (vkCreateFramebuffer(device, create_info, allocator, framebuffer)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -265,9 +265,9 @@ pub inline fn createGraphicsPipelines(
     return switch (vkCreateGraphicsPipelines(device, pipeline_cache, @intCast(u32, create_infos.len), create_infos.ptr, allocator, pipelines.ptr)) {
         .VK_SUCCESS => .Success,
         .VK_PIPELINE_COMPILE_REQUIRED_EXT => .PipelineCompileRequired,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_INVALID_SHADER_NV => error.InvalidShader,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_INVALID_SHADER_NV => Error.InvalidShader,
         else => unreachable,
     };
 }
@@ -280,8 +280,8 @@ pub inline fn createImageView(
 ) !void {
     return switch (vkCreateImageView(device, create_info, allocator, view)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -293,12 +293,12 @@ pub inline fn createInstance(
 ) !void {
     return switch (vkCreateInstance(create_info, allocator, instance)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_INITIALIZATION_FAILED => error.InitializationFailed,
-        .VK_ERROR_LAYER_NOT_PRESENT => error.LayerNotPresent,
-        .VK_ERROR_EXTENSION_NOT_PRESENT => error.ExtensionNotPresent,
-        .VK_ERROR_INCOMPATIBLE_DRIVER => error.IncompatibleDriver,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_INITIALIZATION_FAILED => Error.InitializationFailed,
+        .VK_ERROR_LAYER_NOT_PRESENT => Error.LayerNotPresent,
+        .VK_ERROR_EXTENSION_NOT_PRESENT => Error.ExtensionNotPresent,
+        .VK_ERROR_INCOMPATIBLE_DRIVER => Error.IncompatibleDriver,
         else => unreachable,
     };
 }
@@ -311,8 +311,8 @@ pub inline fn createPipelineLayout(
 ) !void {
     return switch (vkCreatePipelineLayout(device, create_info, allocator, pipeline_layout)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -325,8 +325,8 @@ pub inline fn createRenderPass(
 ) !void {
     return switch (vkCreateRenderPass(device, create_info, allocator, render_pass)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -339,8 +339,8 @@ pub inline fn createSemaphore(
 ) !void {
     return switch (vkCreateSemaphore(device, create_info, allocator, semaphore)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -353,9 +353,9 @@ pub inline fn createShaderModule(
 ) !void {
     return switch (vkCreateShaderModule(device, create_info, allocator, shader_module)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_INVALID_SHADER_NV => error.InvalidShader,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_INVALID_SHADER_NV => Error.InvalidShader,
         else => unreachable,
     };
 }
@@ -368,12 +368,12 @@ pub inline fn createSwapchain(
 ) !void {
     return switch (vkCreateSwapchainKHR(device, create_info, allocator, swapchain)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_DEVICE_LOST => error.DeviceLost,
-        .VK_ERROR_SURFACE_LOST_KHR => error.SurfaceLost,
-        .VK_ERROR_NATIVE_WINDOW_IN_USE_KHR => error.NativeWindowInUse,
-        .VK_ERROR_INITIALIZATION_FAILED => error.InitializationFailed,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_DEVICE_LOST => Error.DeviceLost,
+        .VK_ERROR_SURFACE_LOST_KHR => Error.SurfaceLost,
+        .VK_ERROR_NATIVE_WINDOW_IN_USE_KHR => Error.NativeWindowInUse,
+        .VK_ERROR_INITIALIZATION_FAILED => Error.InitializationFailed,
         else => unreachable,
     };
 }
@@ -383,9 +383,9 @@ pub inline fn deviceWaitIdle(
 ) !void {
     return switch (vkDeviceWaitIdle(device)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_DEVICE_LOST => error.DeviceLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_DEVICE_LOST => Error.DeviceLost,
         else => unreachable,
     };
 }
@@ -395,8 +395,8 @@ pub inline fn endCommandBuffer(
 ) !void {
     return switch (vkEndCommandBuffer(command_buffer)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -410,9 +410,9 @@ pub inline fn enumerateDeviceExtensionProperties(
     return switch (vkEnumerateDeviceExtensionProperties(physical_device, layer_name, property_count, if (properties) |props| props.ptr else null)) {
         .VK_SUCCESS => .Success,
         .VK_INCOMPLETE => .Incomplete,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_LAYER_NOT_PRESENT => error.LayerNotPresent,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_LAYER_NOT_PRESENT => Error.LayerNotPresent,
         else => unreachable,
     };
 }
@@ -424,8 +424,8 @@ pub inline fn enumerateInstanceLayerProperties(
     return switch (vkEnumerateInstanceLayerProperties(property_count, if (properties) |props| props.ptr else null)) {
         .VK_SUCCESS => .Success,
         .VK_INCOMPLETE => .Incomplete,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -438,9 +438,9 @@ pub inline fn enumeratePhysicalDevices(
     return switch (vkEnumeratePhysicalDevices(instance, physical_device_count, if (physical_devices) |devs| devs.ptr else null)) {
         .VK_SUCCESS => .Success,
         .VK_INCOMPLETE => .Incomplete,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_INITIALIZATION_FAILED => error.InitializationFailed,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_INITIALIZATION_FAILED => Error.InitializationFailed,
         else => unreachable,
     };
 }
@@ -452,9 +452,9 @@ pub inline fn getPhysicalDeviceSurfaceCapabilities(
 ) !void {
     return switch (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physical_device, surface, surface_capabilities)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_SURFACE_LOST_KHR => error.SurfaceLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_SURFACE_LOST_KHR => Error.SurfaceLost,
         else => unreachable,
     };
 }
@@ -468,9 +468,9 @@ pub inline fn getPhysicalDeviceSurfaceFormats(
     return switch (vkGetPhysicalDeviceSurfaceFormatsKHR(physical_device, surface, surface_format_count, if (surface_formats) |fmts| fmts.ptr else null)) {
         .VK_SUCCESS => .Success,
         .VK_INCOMPLETE => .Incomplete,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_SURFACE_LOST_KHR => error.SurfaceLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_SURFACE_LOST_KHR => Error.SurfaceLost,
         else => unreachable,
     };
 }
@@ -484,9 +484,9 @@ pub inline fn getPhysicalDeviceSurfacePresentModes(
     return switch (vkGetPhysicalDeviceSurfacePresentModesKHR(physical_device, surface, present_mode_count, if (present_modes) |modes| modes.ptr else null)) {
         .VK_SUCCESS => .Success,
         .VK_INCOMPLETE => .Incomplete,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_SURFACE_LOST_KHR => error.SurfaceLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_SURFACE_LOST_KHR => Error.SurfaceLost,
         else => unreachable,
     };
 }
@@ -499,9 +499,9 @@ pub inline fn getPhysicalDeviceSurfaceSupport(
 ) !void {
     return switch (vkGetPhysicalDeviceSurfaceSupportKHR(physical_device, @intCast(u32, queue_family_index), surface, @ptrCast(*Bool32, supported))) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_SURFACE_LOST_KHR => error.SurfaceLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_SURFACE_LOST_KHR => Error.SurfaceLost,
         else => unreachable,
     };
 }
@@ -515,8 +515,8 @@ pub inline fn getSwapchainImages(
     return switch (vkGetSwapchainImagesKHR(device, swapchain, swapchain_image_count, if (swapchain_images) |imgs| imgs.ptr else null)) {
         .VK_SUCCESS => .Success,
         .VK_INCOMPLETE => .Incomplete,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -528,12 +528,12 @@ pub inline fn queuePresent(
     return switch (vkQueuePresentKHR(queue, present_info)) {
         .VK_SUCCESS => .Success,
         .VK_SUBOPTIMAL_KHR => .Suboptimal,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_DEVICE_LOST => error.DeviceLost,
-        .VK_ERROR_OUT_OF_DATE_KHR => error.OutOfDate,
-        .VK_ERROR_SURFACE_LOST_KHR => error.SurfaceLost,
-        .VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT => error.FullScreenExclusiveModeLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_DEVICE_LOST => Error.DeviceLost,
+        .VK_ERROR_OUT_OF_DATE_KHR => Error.OutOfDate,
+        .VK_ERROR_SURFACE_LOST_KHR => Error.SurfaceLost,
+        .VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT => Error.FullScreenExclusiveModeLost,
         else => unreachable,
     };
 }
@@ -545,9 +545,9 @@ pub inline fn queueSubmit(
 ) !void {
     return switch (vkQueueSubmit(queue, @intCast(u32, submits.len), submits.ptr, fence)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_DEVICE_LOST => error.DeviceLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_DEVICE_LOST => Error.DeviceLost,
         else => unreachable,
     };
 }
@@ -558,8 +558,8 @@ pub inline fn resetFences(
 ) !void {
     return switch (vkResetFences(device, @intCast(u32, fences.len), fences.ptr)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
         else => unreachable,
     };
 }
@@ -573,9 +573,9 @@ pub inline fn waitForFences(
     return switch (vkWaitForFences(device, @intCast(u32, fences.len), fences.ptr, @boolToInt(wait_all), timeout)) {
         .VK_SUCCESS => .Success,
         .VK_TIMEOUT => .Timeout,
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
-        .VK_ERROR_OUT_OF_DEVICE_MEMORY => error.OutOfDeviceMemory,
-        .VK_ERROR_DEVICE_LOST => error.DeviceLost,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_DEVICE_MEMORY => Error.OutOfDeviceMemory,
+        .VK_ERROR_DEVICE_LOST => Error.DeviceLost,
         else => unreachable,
     };
 }
@@ -589,11 +589,11 @@ pub inline fn createDebugUtilsMessenger(
     const vkCreateDebugUtilsMessenger = @ptrCast(
         PFN_vkCreateDebugUtilsMessengerEXT,
         vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT"),
-    ) orelse return error.ExtensionNotPresent;
+    ) orelse return Error.ExtensionNotPresent;
 
     return switch (vkCreateDebugUtilsMessenger(instance, create_info, allocator, messenger)) {
         .VK_SUCCESS => {},
-        .VK_ERROR_OUT_OF_HOST_MEMORY => error.OutOfHostMemory,
+        .VK_ERROR_OUT_OF_HOST_MEMORY => Error.OutOfHostMemory,
         else => unreachable,
     };
 }
